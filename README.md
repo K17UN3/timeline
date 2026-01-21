@@ -14,7 +14,7 @@ services:
   web:
     image: nginx:latest
     ports:
-      - 80:80
+      - 80:80 
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - ./public/:/var/www/public/
