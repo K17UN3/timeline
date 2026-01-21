@@ -132,6 +132,10 @@ RUN install -o www-data -g www-data -d /var/www/upload/image/
 COPY ./php.ini ${PHP_INI_DIR}/php.ini
 ```
 
-〈 Dockerの起動：docker compose up 〉
+〈 Dockerの起動・停止 〉
+```
+docker compose up
+Ctrl + C
+```
 
 〈 配信するファイルの設置場所：mkdir public 〉
