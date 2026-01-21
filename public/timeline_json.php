@@ -43,7 +43,7 @@ foreach ($select_sth as $entry) {
   $result_entry = [
     'id' => $entry['id'],
     'user_name' => $entry['user_name'],
-    'user_icon_url' => empty($entry['user_icon_filename'])
+    'user_icon_file_url' => empty($entry['user_icon_filename'])
       ? ''
       : ('/image/' . $entry['user_icon_filename']),
     'user_profile_url' => '/profile.php?user_id=' . $entry['user_id'],

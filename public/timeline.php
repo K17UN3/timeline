@@ -1,12 +1,10 @@
 <?php
 $dbh = new PDO('mysql:host=mysql;dbname=example_db', 'root', '');
 
-('mysql:host=mysql;dbname=example_db', 'root', '');
-
 session_start();
 if (empty($_SESSION['login_user_id'])) { // 非ログインの場合利用不可
   header("HTTP/1.1 302 Found");
-  header("Location: /login.php");
+  header("Location: /login2.php");
   return;
 }
 
@@ -109,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (entry.user_icon_file_url !== undefined && entry.user_icon_file_url !== '') {
         entryCopied.querySelector('[data-role="entryUserIconImage"]').src = entry.user_icon_file_url;
       } else {
-        entryCopied.querySelector('[data-role="entryUserIconImage"]').display = 'none';
+        entryCopied.querySelector('[data-role="entryUserIconImage"]').style.display = 'none';
       }
 
       // 名前を表示
@@ -194,26 +192,3 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
     
-      return;
-    }
-
-    // 画像縮小処理
-    const imageBase64Input = document.getElementById("imageBase64Input");
-    const canvas = document.getElementById("imageCanvas");
-    const reader = new FileReader();
-    const image = new Image();
-    reader.onload = () => { // ファイルの読み込み完了したら動く処理を指定
-      image.onload = () => { // 画像として読み込み完了したら動く処理を指定
-
-        // 元の縦横比を保ったまま縮小するサイズを決めてcanvasの縦横に指定する
-        const originalWidth = image.naturalWidth; // 元画像の横幅
-        const originalHeight = image.naturalHeight; // 元画像の高さ
-        const maxLength = 1000;
-        if (originalWidth <= maxLength && originalHeight <= maxLength) {
-            canvas.width = originalWidth;
-            canvas.height = originalHeight;
-        } else if (originalWidth > originalHeight) { // 横長画像の場合
-            canvas.width = maxLength;
-            canvas.height = maxLength * originalHeight / originalWidth;
-        } else { // 縦長画像の場合
-
