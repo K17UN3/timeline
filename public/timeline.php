@@ -87,108 +87,86 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
   const entryTemplate = document.getElementById('entryTemplate');
   const entriesRenderArea = document.getElementById('entriesRenderArea');
 
-  const request = new XMLHttpRequest();
-  request.onload = (event) => {
-    const response = event.target.response;
-    response.entries.forEach((entry) => {
-      // テンプレートとするものから要素をコピー
-      const entryCopied = entryTemplate.cloneNode(true);
+  const LIMIT = 5;
+  let offset = 0;
+  let isLoading = false;
+  let isFinished = false;
 
-      // display: none を display: block に書き換える
-      entryCopied.style.display = 'block';
+  function renderEntry(entry) {
+    const entryCopied = entryTemplate.cloneNode(true);
+    entryCopied.style.display = 'block';
 
-      // 番号(ID)を表示
-      entryCopied.querySelector('[data-role="entryIdArea"]').innerText = entry.id.toString();
+    entryCopied.querySelector('[data-role="entryIdArea"]').innerText = entry.id;
+    entryCopied.querySelector('[data-role="entryUserNameArea"]').innerText = entry.user_name;
+    entryCopied.querySelector('[data-role="entryUserAnchor"]').href = entry.user_profile_url;
+    entryCopied.querySelector('[data-role="entryCreatedAtArea"]').innerText = entry.created_at;
+    entryCopied.querySelector('[data-role="entryBodyArea"]').innerHTML = entry.body;
 
-      // アイコン画像が存在する場合は表示 なければimg要素ごと非表示に
-      if (entry.user_icon_file_url !== undefined && entry.user_icon_file_url !== '') {
-        entryCopied.querySelector('[data-role="entryUserIconImage"]').src = entry.user_icon_file_url;
-      } else {
-        entryCopied.querySelector('[data-role="entryUserIconImage"]').style.display = 'none';
-      }
+    const icon = entryCopied.querySelector('[data-role="entryUserIconImage"]');
+    if (entry.user_icon_file_url) {
+      icon.src = entry.user_icon_file_url;
+    } else {
+      icon.style.display = 'none';
+    }
 
-      // 名前を表示
-      entryCopied.querySelector('[data-role="entryUserNameArea"]').innerText = entry.user_name;
+    if (entry.image_file_url) {
+      const img = new Image();
+      img.src = entry.image_file_url;
+      img.style.maxWidth = '300px';
+      img.style.marginTop = '1em';
+      entryCopied.querySelector('[data-role="entryBodyArea"]').appendChild(img);
+    }
 
-      // 名前のところのリンク先(プロフィール)のURLを設定
-      entryCopied.querySelector('[data-role="entryUserAnchor"]').href = entry.user_profile_url;
-
-      // 投稿日時を表示
-      entryCopied.querySelector('[data-role="entryCreatedAtArea"]').innerText = entry.created_at;
-
-      // 本文を表示 (ここはHTMLなのでinnerHTMLで)
-      entryCopied.querySelector('[data-role="entryBodyArea"]').innerHTML = entry.body;
-
-      // 画像が存在する場合に本文の下部に画像を表示
-      if (entry.image_file_url !== undefined && entry.image_file_url !== '') {
-        const imageElement = new Image();
-        imageElement.src = entry.image_file_url; // 画像URLを設定
-        imageElement.style.display = 'block'; // ブロック要素にする (img要素はデフォルトではインライン要素のため)
-        imageElement.style.marginTop = '1em'; // 画像上部の余白を設定
-        imageElement.style.maxHeight = '300px'; // 画像を表示する最大サイズ(縦)を設定
-        imageElement.style.maxWidth = '300px'; // 画像を表示する最大サイズ(横)を設定
-        entryCopied.querySelector('[data-role="entryBodyArea"]').appendChild(imageElement); // 本文エリアに画像を追加
-      }
-
-      // 最後に実際の描画を行う
-      entriesRenderArea.appendChild(entryCopied);
-    });
+    entriesRenderArea.appendChild(entryCopied);
   }
-  request.open('GET', '/timeline_json.php', true); // timeline_json.php を叩く
-  request.responseType = 'json';
-  request.send();
 
+  function loadEntries() {
+    if (isLoading || isFinished) return;
 
-  // 以下画像縮小用
-  const imageInput = document.getElementById("imageInput");
-  imageInput.addEventListener("change", () => {
-    if (imageInput.files.length < 1) {
-      // 未選択の場合
-      return;
-    }
+    isLoading = true;
 
-    const file = imageInput.files[0];
-    if (!file.type.startsWith('image/')){ // 画像でなければスキップ
-      return;
-    }
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      const response = xhr.response;
 
-    // 画像縮小処理
-    const imageBase64Input = document.getElementById("imageBase64Input"); // base64を送るようのinput
-    const canvas = document.getElementById("imageCanvas"); // 描画するcanvas
-    const reader = new FileReader();
-    const image = new Image();
-    reader.onload = () => { // ファイルの読み込み完了したら動く処理を指定
-      image.onload = () => { // 画像として読み込み完了したら動く処理を指定
+      if (!response.entries || response.entries.length === 0) {
+        isFinished = true;
+        isLoading = false;
+        return;
+      }
 
-        // 元の縦横比を保ったまま縮小するサイズを決めてcanvasの縦横に指定する
-        const originalWidth = image.naturalWidth; // 元画像の横幅
-        const originalHeight = image.naturalHeight; // 元画像の高さ
-        const maxLength = 1000; // 横幅も高さも1000以下に縮小するものとする
-        if (originalWidth <= maxLength && originalHeight <= maxLength) { // どちらもmaxLength以下の場合そのまま
-            canvas.width = originalWidth;
-            canvas.height = originalHeight;
-        } else if (originalWidth > originalHeight) { // 横長画像の場合
-            canvas.width = maxLength;
-            canvas.height = maxLength * originalHeight / originalWidth;
-        } else { // 縦長画像の場合
-            canvas.width = maxLength * originalWidth / originalHeight;
-            canvas.height = maxLength;
-        }
+      response.entries.forEach(renderEntry);
 
-        // canvasに実際に画像を描画 (canvasはdisplay:noneで隠れているためわかりにくいが...)
-        const context = canvas.getContext("2d");
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      offset += response.entries.length;
 
-        // canvasの内容をbase64に変換しinputのvalueに設定
-        imageBase64Input.value = canvas.toDataURL();
-      };
-      image.src = reader.result;
+      isLoading = false;
     };
-    reader.readAsDataURL(file);
+
+    xhr.open(
+      'GET',
+      `/timeline_json.php?limit=${LIMIT}&offset=${offset}`,
+      true
+    );
+    xhr.responseType = 'json';
+    xhr.send();
+  }
+
+  // 初回読み込み
+  loadEntries();
+
+  // スクロールしたら次を読み込む
+  window.addEventListener('scroll', () => {
+    if (
+      window.innerHeight + window.scrollY
+      >= document.body.offsetHeight - 200
+    ) {
+      loadEntries();
+    }
   });
+
 });
-</script>
-    
+</script> 

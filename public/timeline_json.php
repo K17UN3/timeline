@@ -9,6 +9,9 @@ if (empty($_SESSION['login_user_id'])) { // 非ログインの場合利用不可
   return;
 }
 
+$limit  = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 5;
+$offset = isset($_GET['offset']) ? max(0, (int)$_GET['offset']) : 0;
+
 // 現在のログイン情報を取得する
 $user_select_sth = $dbh->prepare("SELECT * from users WHERE id = :id");
 $user_select_sth->execute([':id' => $_SESSION['login_user_id']]);
@@ -18,15 +21,18 @@ $user = $user_select_sth->fetch();
 $sql = 'SELECT bbs_entries.*, users.name AS user_name, users.icon_filename AS user_icon_filename'
   . ' FROM bbs_entries'
   . ' INNER JOIN users ON bbs_entries.user_id = users.id'
-  . ' WHERE'
+  . ' WHERE ('
   . '   bbs_entries.user_id IN'
   . '     (SELECT followee_user_id FROM user_relationships WHERE follower_user_id = :login_user_id)'
   . '   OR bbs_entries.user_id = :login_user_id'
-  . ' ORDER BY bbs_entries.created_at DESC';
+  . ' )'
+  . ' ORDER BY bbs_entries.created_at DESC'
+  . ' LIMIT :limit OFFSET :offset';
 $select_sth = $dbh->prepare($sql);
-$select_sth->execute([
-  ':login_user_id' => $_SESSION['login_user_id'],
-]);
+$select_sth->bindValue(':login_user_id', $_SESSION['login_user_id'], PDO::PARAM_INT);
+$select_sth->bindValue(':limit', $limit, PDO::PARAM_INT);
+$select_sth->bindValue(':offset', $offset, PDO::PARAM_INT);
+$select_sth->execute();
 
 // bodyのHTMLを出力するための関数を用意する
 function bodyFilter (string $body): string
