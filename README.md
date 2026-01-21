@@ -1,10 +1,13 @@
-〈 EC2インスタンス作成 〉
+### 〈 EC2インスタンス作成 〉
 
-〈 EC2インスタンスへPCからSSHでログイン 〉
+### 〈 EC2インスタンスへPCからSSHでログイン 〉
 
-〈 Docker インストール 〉
+### 〈 vim インストール 〉
+sudo yum install vim -y
 
-〈 Docker Compose インストール 〉
+### 〈 Docker インストール 〉
+
+### 〈 Docker Compose インストール 〉
 
 ## ファイル作成：vim compose.yml
 
