@@ -58,7 +58,8 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
 <form method="POST" action="./timeline.php"><!-- enctypeは外しておきましょう -->
   <textarea name="body" required></textarea>
   <div style="margin: 1em 0;">
-    <input type="file" accept="image/*" name="image" id="imageInput">
+    <input type="file" accept="image/*" name="images[]" id="imageInput" multiple>
+    <input id="imageBase64Input" type="hidden" name="image_base64_json">
   </div>
   <input id="imageBase64Input" type="hidden" name="image_base64"><!-- base64を送る用のinput (非表示) -->
   <canvas id="imageCanvas" style="display: none;"></canvas><!-- 画像縮小に使うcanvas (非表示) -->
@@ -113,12 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.style.display = 'none';
     }
 
-    if (entry.image_file_url) {
-      const img = new Image();
-      img.src = entry.image_file_url;
-      img.style.maxWidth = '300px';
-      img.style.marginTop = '1em';
-      entryCopied.querySelector('[data-role="entryBodyArea"]').appendChild(img);
+    // 画像（複数対応）
+    if (entry.image_file_urls && entry.image_file_urls.length > 0) {
+      entry.image_file_urls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+        img.style.maxWidth = '300px';
+        img.style.margin = '0.5em 0.5em 0 0';
+        entryCopied.querySelector('[data-role="entryBodyArea"]').appendChild(img);
+      });
     }
 
     entriesRenderArea.appendChild(entryCopied);
@@ -142,31 +146,58 @@ document.addEventListener("DOMContentLoaded", () => {
       response.entries.forEach(renderEntry);
 
       offset += response.entries.length;
-
       isLoading = false;
     };
 
-    xhr.open(
-      'GET',
-      `/timeline_json.php?limit=${LIMIT}&offset=${offset}`,
-      true
-    );
+    xhr.open('GET', `/timeline_json.php?limit=${LIMIT}&offset=${offset}`, true);
     xhr.responseType = 'json';
     xhr.send();
   }
 
-  // 初回読み込み
   loadEntries();
 
-  // スクロールしたら次を読み込む
+  // スクロールで追加読み込み
   window.addEventListener('scroll', () => {
-    if (
-      window.innerHeight + window.scrollY
-      >= document.body.offsetHeight - 200
-    ) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
       loadEntries();
     }
   });
 
+
+  // 画像複数アップ用
+  const imageInput = document.getElementById('imageInput');
+  const imageBase64Input = document.getElementById('imageBase64Input');
+  const canvas = document.getElementById('imageCanvas');
+  const ctx = canvas.getContext('2d');
+
+  imageInput.addEventListener('change', () => {
+    const files = Array.from(imageInput.files).slice(0, 4); // 最大4枚
+    const base64List = [];
+    let processed = 0;
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const maxWidth = 800;
+          const scale = Math.min(1, maxWidth / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          base64List.push(canvas.toDataURL('image/png'));
+
+          processed++;
+          if (processed === files.length) {
+            imageBase64Input.value = JSON.stringify(base64List);
+          }
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
 });
-</script> 
+</script>
