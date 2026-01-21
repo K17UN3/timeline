@@ -9,6 +9,7 @@
 ## ファイル作成：vim compose.yml
 
 【内容】
+
 services:
   web:
     image: nginx:latest
@@ -56,6 +57,7 @@ volumes:
 ## ファイル作成：vim nginx/conf.d/default.conf
 
 【内容】
+
 server {
     listen       0.0.0.0:80;
     server_name  _;
@@ -92,6 +94,7 @@ server {
 ## ファイル作成：vim Dcokerfile
 
 【内容】
+
 FROM php:8.4-fpm-alpine AS php
 
 RUN apk add --no-cache autoconf build-base \
