@@ -9,7 +9,7 @@
 ## ファイル作成：vim compose.yml
 
 【内容】
-
+```
 services:
   web:
     image: nginx:latest
@@ -52,12 +52,12 @@ services:
 volumes:
   mysql:
   image:
-
+```
 
 ## ファイル作成：vim nginx/conf.d/default.conf
 
 【内容】
-
+```
 server {
     listen       0.0.0.0:80;
     server_name  _;
@@ -89,12 +89,12 @@ server {
       add_header Cache-Control "public";
   }
 }
-
+```
 
 ## ファイル作成：vim Dcokerfile
 
 【内容】
-
+```
 FROM php:8.4-fpm-alpine AS php
 
 RUN apk add --no-cache autoconf build-base \
@@ -106,7 +106,7 @@ RUN docker-php-ext-install pdo_mysql
 RUN install -o www-data -g www-data -d /var/www/upload/image/
 
 COPY ./php.ini ${PHP_INI_DIR}/php.ini
-
+```
 
 〈 Dockerの起動：docker compose up 〉
 
