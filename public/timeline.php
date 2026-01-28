@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       img.src = entry.image_file_url;
       img.style.maxWidth = '300px';
       img.style.marginTop = '1em';
+      img.style.display = 'block';
       entryCopied.querySelector('[data-role="entryBodyArea"]').appendChild(img);
     }
 
@@ -169,4 +170,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
-</script> 
+</script>
+ 
