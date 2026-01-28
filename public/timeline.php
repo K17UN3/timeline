@@ -2,7 +2,7 @@
 $dbh = new PDO('mysql:host=mysql;dbname=example_db', 'root', '');
 
 session_start();
-if (empty($_SESSION['login_user_id'])) { // 非ログインの場合利用不可
+if (empty($_SESSION['login_user_id'])) {
   header("HTTP/1.1 302 Found");
   header("Location: /login2.php");
   return;
@@ -17,6 +17,8 @@ $user = $user_select_sth->fetch();
 if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
 
   $image_filename = null;
+  
+  // base64が送られてきた場合
   if (!empty($_POST['image_base64'])) {
     // 先頭の data:~base64, のところは削る
     $base64 = preg_replace('/^data:.+base64,/', '', $_POST['image_base64']);
@@ -30,16 +32,14 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
     file_put_contents($filepath, $image_binary);
   }
 
-  // insertする
   $insert_sth = $dbh->prepare("INSERT INTO bbs_entries (user_id, body, image_filename) VALUES (:user_id, :body, :image_filename)");
   $insert_sth->execute([
-    ':user_id' => $_SESSION['login_user_id'], // ログインしている会員情報の主キー
-    ':body' => $_POST['body'], // フォームから送られてきた投稿本文
-    ':image_filename' => $image_filename, // 保存した画像の名前 (nullの場合もある)
+    ':user_id' => $_SESSION['login_user_id'], // 投稿者ID
+    ':body' => $_POST['body'], // 投稿本文
+    ':image_filename' => $image_filename, // 画像の名前
   ]);
 
-  // 処理が終わったらリダイレクトする
-  // リダイレクトしないと，リロード時にまた同じ内容でPOSTすることになる
+  // 処理が終わったらリダイレクト
   header("HTTP/1.1 303 See Other");
   header("Location: ./timeline.php");
   return;
@@ -54,14 +54,15 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
   /
   <a href="/users.php">会員一覧画面</a>
 </div>
-<!-- フォームのPOST先はこのファイル自身にする -->
-<form method="POST" action="./timeline.php"><!-- enctypeは外しておきましょう -->
+
+<!-- 投稿フォーム -->
+<form method="POST" action="./timeline.php">
   <textarea name="body" required></textarea>
   <div style="margin: 1em 0;">
     <input type="file" accept="image/*" name="image" id="imageInput">
   </div>
-  <input id="imageBase64Input" type="hidden" name="image_base64"><!-- base64を送る用のinput (非表示) -->
-  <canvas id="imageCanvas" style="display: none;"></canvas><!-- 画像縮小に使うcanvas (非表示) -->
+  <input id="imageBase64Input" type="hidden" name="image_base64"><!-- base64を送る用 -->
+  <canvas id="imageCanvas" style="display: none;"></canvas><!-- 画像縮小に使うcanvas -->
   <button type="submit">送信</button>
 </form>
 <hr>
@@ -88,18 +89,21 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+  // 投稿テンプレートと描画エリア
   const entryTemplate = document.getElementById('entryTemplate');
   const entriesRenderArea = document.getElementById('entriesRenderArea');
 
   const LIMIT = 5;
-  let offset = 0;
-  let isLoading = false;
-  let isFinished = false;
+  let offset = 0;  // 取得位置
+  let isLoading = false;  // 読み込み中フラグ
+  let isFinished = false;  // 全件読み終わったかどうか
 
+  // 画像の描画
   function renderEntry(entry) {
     const entryCopied = entryTemplate.cloneNode(true);
     entryCopied.style.display = 'block';
 
+    // 基本情報
     entryCopied.querySelector('[data-role="entryIdArea"]').innerText = entry.id;
     entryCopied.querySelector('[data-role="entryUserNameArea"]').innerText = entry.user_name;
     entryCopied.querySelector('[data-role="entryUserAnchor"]').href = entry.user_profile_url;
@@ -113,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.style.display = 'none';
     }
 
+    // 投稿画像がある
     if (entry.image_file_url) {
       const img = new Image();
       img.src = entry.image_file_url;
@@ -125,28 +130,36 @@ document.addEventListener("DOMContentLoaded", () => {
     entriesRenderArea.appendChild(entryCopied);
   }
 
+  // 投稿一覧を取得
   function loadEntries() {
     if (isLoading || isFinished) return;
 
+    // 読み込み中フラグをON
     isLoading = true;
 
+    // サーバーと通信するためのオブジェクト作成
     const xhr = new XMLHttpRequest();
     xhr.onload = () => {
       const response = xhr.response;
 
+      // データがもうない
       if (!response.entries || response.entries.length === 0) {
         isFinished = true;
         isLoading = false;
         return;
       }
 
+      // 投稿の表示
       response.entries.forEach(renderEntry);
 
+      // 次に読み込む投稿の開始位置を更新
       offset += response.entries.length;
 
+      // 読み込み中フラグを解除
       isLoading = false;
     };
 
+    // サーバーに投稿データをJSONで取りに行く
     xhr.open(
       'GET',
       `/timeline_json.php?limit=${LIMIT}&offset=${offset}`,
@@ -159,9 +172,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 初回読み込み
   loadEntries();
 
-  // スクロールしたら次を読み込む
   window.addEventListener('scroll', () => {
     if (
+      // ページ上から下までの高さ>= 全体の高さ- 200
       window.innerHeight + window.scrollY
       >= document.body.offsetHeight - 200
     ) {
