@@ -41,9 +41,9 @@ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
 ## ファイル作成
-vim compose.yml
-nginx/conf.d/default.conf
-Dcokerfile
+・vim compose.yml  
+・nginx/conf.d/default.conf  
+・Dcokerfile  
 ※ プログラムコード通りに作成  
 
 #### 〈 Dockerの起動・停止 〉
