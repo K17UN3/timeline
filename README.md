@@ -40,7 +40,7 @@ sudo curl -SL https://github.com/docker/compose/releases/download/v2.36.0/docker
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
-## ファイル作成
+#### 〈 設定ファイル作成 〉
 ・vim compose.yml  
 ・nginx/conf.d/default.conf  
 ・Dcokerfile  
