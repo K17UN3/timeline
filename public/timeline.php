@@ -55,7 +55,7 @@ if (isset($_POST['body']) && !empty($_SESSION['login_user_id'])) {
   <a href="/users.php">会員一覧画面</a>
 </div>
 
-<!-- 投稿フォーム -->
+<!-- 投稿 -->
 <form method="POST" action="./timeline.php">
   <textarea name="body" required></textarea>
   <div style="margin: 1em 0;">
