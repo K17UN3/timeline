@@ -46,7 +46,7 @@ git config --global user.email "GitHubに登録したメールアドレス"
 起動：screen  
 停止：exit
 
-### 〈 Gitからクローンする 〉
+### 〈 GitHubからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
 ・「pwd」 で「/home/ec2-user/workspace」となっていれば良い  
 ・GitHubのCode(緑のボタン)からSSHのURLをコピーしてクローンする
