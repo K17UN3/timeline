@@ -59,7 +59,7 @@ git clone git@github.com:K17UN3/timeline.git
 
 ### 〈 MySQL 起動方法とテーブル作成 〉
 dockerを起動した後に、example_db内に入る
-```powershell
+```bash
 docker compose exec mysql mysql example_db
 ```
 
