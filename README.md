@@ -5,17 +5,17 @@ ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
 
 ### 〈 vim インストール 〉
-```powershell
+```bash
 sudo yum install vim -y
 ```
 
 ### 〈 screen インストール 〉
-```powershell
+```bash
 sudo yum install screen -y
 ```
 
 ### 〈 Docker インストール 〉
-```powershell
+```bash
 sudo yum install -y docker  
 sudo systemctl start docker  
 sudo systemctl enable docker  
@@ -23,14 +23,14 @@ sudo usermod -a -G docker ec2-user
 ```
 
 ### 〈 Docker Compose インストール 〉
-```powershell
+```bash
 sudo mkdir -p /usr/local/lib/docker/cli-plugins/
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.36.0/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
 ### 〈 Git インストールと設定 〉
-```powershell
+```bash
 sudo yum install git -y
 git config --global init.defaultBranch main
 git config --global user.name "名前"
@@ -39,7 +39,7 @@ git config --global user.email "GitHubに登録したメールアドレス"
 
 ## Docker起動から内容作成
 ### 〈 Dockerの起動・停止 〉
-```powershell
+```bash
 docker compose up
 Ctrl + C
 ```
@@ -80,11 +80,11 @@ CREATE TABLE user_relationships (
   follower_user_id INT UNSIGNED NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-):
+);
 ```
 
 ### 〈 screenの起動・停止 〉
-```powershell
+```bash
 screen
 exit
 ```
@@ -93,7 +93,7 @@ exit
 ・作業用ディレクトリを作ってGitからクローンする  
 ・「pwd」 で「/home/ec2-user/workspace」となっていれば良い  
 ・GitHubのCode(緑のボタン)からSSHのURLをコピーしてクローンする
-```powershell
+```bash
 mkdir workspace
 cd workspace
 pwd
