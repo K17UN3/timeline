@@ -1,9 +1,9 @@
-## インストール手順  
-### 〈 EC2インスタンスへSSHでログイン 〉
+## EC2インスタンスへSSHでログイン
 ```powershell
 ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
 
+## インストール手順  
 ### 〈 vim インストール 〉
 ```bash
 sudo yum install vim -y
