@@ -82,8 +82,6 @@ CREATE TABLE user_relationships (
 ```
 
 #### 〈 screenの起動・停止 〉
-・作業用ディレクトリを作成する場合は、作ったディレクトリに cd で入ってから「screen」コマンドを実行  
-・停止方法：「exit」コマンドを実行
 ```powershell
 screen
 exit
