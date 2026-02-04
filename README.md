@@ -2,12 +2,12 @@
 ### 〈 EC2インスタンスへSSHでログイン 〉
 ```powershell
 ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
-```  
+```
 
 ### 〈 vim インストール 〉
 ```powershell
 sudo yum install vim -y
-```  
+```
 
 ### 〈 screen インストール 〉
 ```powershell
@@ -83,13 +83,13 @@ CREATE TABLE user_relationships (
 ):
 ```
 
-#### 〈 screenの起動・停止 〉
+### 〈 screenの起動・停止 〉
 ```powershell
 screen
 exit
 ```
 
-#### 〈 Gitからクローンする 〉
+### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
 ・「pwd」 で「/home/ec2-user/workspace」となっていれば良い  
 ・GitHubのCode(緑のボタン)からSSHのURLをコピーしてクローンする
