@@ -36,7 +36,14 @@ git config --global user.name "名前"
 git config --global user.email "GitHubに登録したメールアドレス"
 ```
 
+#### 〈 Dockerの起動・停止 〉
+```
+docker compose up
+Ctrl + C
+```
+
 #### 〈 MySQL 〉
+dockerを起動した後に、example_db内に入る
 ```
 docker compose exec mysql mysql example_db
 ```
@@ -78,12 +85,6 @@ CREATE TABLE user_relationships (
 ```
 screen
 exit
-```
-
-#### 〈 Dockerの起動・停止 〉
-```
-docker compose up
-Ctrl + C
 ```
 
 #### 〈 Gitからクローンする 〉
