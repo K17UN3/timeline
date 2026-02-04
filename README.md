@@ -1,4 +1,5 @@
-#### 〈 EC2インスタンスへSSHでログイン 〉
+## インストール手順  
+### 〈 EC2インスタンスへSSHでログイン 〉
 ```powershell
 ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
@@ -36,6 +37,7 @@ git config --global user.name "名前"
 git config --global user.email "GitHubに登録したメールアドレス"
 ```
 
+## Docker起動後の作業
 #### 〈 Dockerの起動・停止 〉
 ```powershell
 docker compose up
