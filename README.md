@@ -42,11 +42,13 @@ docker compose up
 Ctrl + C
 ```
 
-#### 〈 MySQL 〉
+#### 〈 MySQL 起動方法とテーブル作成 〉
 dockerを起動した後に、example_db内に入る
 ```
 docker compose exec mysql mysql example_db
 ```
+
+テーブル作成 CREATE文
 ```mysql
 CREATE TABLE users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -95,5 +97,5 @@ exit
 mkdir workspace
 cd workspace
 pwd
-git clone SSHのURL
+git clone git@github.com:K17UN3/timeline.git
 ```
