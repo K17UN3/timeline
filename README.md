@@ -39,7 +39,8 @@ git config --global user.email "GitHubに登録したメールアドレス"
 #### 〈 MySQL 〉
 ```
 docker compose exec mysql mysql example_db
-
+```
+```mysql
 CREATE TABLE users (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name TEXT NOT NULL,
