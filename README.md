@@ -39,7 +39,7 @@ git config --global user.email "GitHubに登録したメールアドレス"
 
 ## Docker起動から内容作成
 ### 〈 Dockerの起動・停止 〉
-起動：```bash docker compose up ```  
+起動：docker compose up  
 停止：Ctrl + C
 
 ### 〈 MySQL 起動方法とテーブル作成 〉
@@ -82,8 +82,8 @@ CREATE TABLE user_relationships (
 ```
 
 ### 〈 screenの起動・停止 〉
-起動：```bash screen ```  
-停止：```bash exit ```
+起動：bash screen  
+停止：bash exit
 
 ### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
