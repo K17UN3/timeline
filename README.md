@@ -4,17 +4,7 @@ ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
 
 ## インストール手順  
-### 〈 vim インストール 〉
-```bash
-sudo yum install vim -y
-```
-
-### 〈 screen インストール 〉
-```bash
-sudo yum install screen -y
-```
-
-### 〈 Docker インストール 〉
+### Docker インストール
 ```bash
 sudo yum install -y docker  
 sudo systemctl start docker  
@@ -22,14 +12,14 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 ```
 
-### 〈 Docker Compose インストール 〉
+### Docker Compose インストール
 ```bash
 sudo mkdir -p /usr/local/lib/docker/cli-plugins/
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.36.0/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
-### 〈 Git インストールと設定 〉
+### Git インストールと設定
 ```bash
 sudo yum install git -y
 git config --global init.defaultBranch main
@@ -38,15 +28,15 @@ git config --global user.email "GitHubに登録したメールアドレス"
 ```
 
 ## Docker起動から内容作成
-### 〈 Dockerの起動と停止 〉
+### Dockerの起動と停止
 起動：docker compose up  
 停止：Ctrl + C
 
-### 〈 screenの起動と停止 〉
+### screenの起動と停止
 起動：screen  
 停止：exit
 
-### 〈 GitHubからクローンする 〉
+### GitHubからクローンする
 ・作業用ディレクトリを作る  
 ・「pwd」 で「/home/ec2-user/workspace」となっていれば良い  
 ・GitHubのCode(緑のボタン)からSSHのURLをコピーしてクローンする
@@ -57,7 +47,7 @@ pwd
 git clone git@github.com:K17UN3/timeline.git
 ```
 
-### 〈 MySQL 起動方法とテーブル作成 〉
+### MySQL 起動方法とテーブル作成
 dockerを起動した後に、example_db内に入る
 ```bash
 docker compose exec mysql mysql example_db
