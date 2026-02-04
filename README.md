@@ -38,11 +38,11 @@ git config --global user.email "GitHubに登録したメールアドレス"
 ```
 
 ## Docker起動から内容作成
-### 〈 Dockerの起動・停止 〉
+### 〈 Dockerの起動と停止 〉
 起動：docker compose up  
 停止：Ctrl + C
 
-### 〈 screenの起動・停止 〉
+### 〈 screenの起動と停止 〉
 起動：screen  
 停止：exit
 
