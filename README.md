@@ -1,4 +1,4 @@
-## EC2インスタンスへSSHでログイン
+## EC2インスタンスへPCからSSHでログイン
 ```powershell
 ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
