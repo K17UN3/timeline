@@ -82,8 +82,8 @@ CREATE TABLE user_relationships (
 ```
 
 ### 〈 screenの起動・停止 〉
-起動：bash screen  
-停止：bash exit
+起動：screen  
+停止：exit
 
 ### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
