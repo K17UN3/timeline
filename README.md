@@ -42,6 +42,10 @@ git config --global user.email "GitHubに登録したメールアドレス"
 起動：docker compose up  
 停止：Ctrl + C
 
+### 〈 screenの起動・停止 〉
+起動：screen  
+停止：exit
+
 ### 〈 MySQL 起動方法とテーブル作成 〉
 dockerを起動した後に、example_db内に入る
 ```powershell
@@ -80,10 +84,6 @@ CREATE TABLE user_relationships (
   PRIMARY KEY (id)
 );
 ```
-
-### 〈 screenの起動・停止 〉
-起動：screen  
-停止：exit
 
 ### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
