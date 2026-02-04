@@ -39,10 +39,8 @@ git config --global user.email "GitHubに登録したメールアドレス"
 
 ## Docker起動から内容作成
 ### 〈 Dockerの起動・停止 〉
-```bash
-docker compose up
-Ctrl + C
-```
+起動：```bash docker compose up ```
+停止：Ctrl + C
 
 ### 〈 MySQL 起動方法とテーブル作成 〉
 dockerを起動した後に、example_db内に入る
