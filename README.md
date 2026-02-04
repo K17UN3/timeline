@@ -1,6 +1,6 @@
 #### 〈 EC2インスタンスへSSHでログイン 〉
 ```
-ssh ec2-user@{IPアドレス} -i {秘密鍵ファイルのパス}
+ssh ec2-user@IPアドレス -i 秘密鍵ファイルのパス
 ```
 
 #### 〈 vim インストール 〉
@@ -53,10 +53,10 @@ Ctrl + C
 #### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
 ・「pwd」 で「/home/ec2-user/workspace」となっていればいい  
-・GitHubの
+・GitHubのCodeからSSHのURLをコピーしてクローンする
 ```
 mkdir workspace
 cd workspace
 pwd
-git clone https://github.com/ユーザー名/リポジトリ名.git
+git clone SSHのURL
 ```
