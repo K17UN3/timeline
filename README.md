@@ -50,8 +50,13 @@ docker compose up
 Ctrl + C
 ```
 
-#### 〈 配信するファイルの設置場所：mkdir public 〉
-作ったディレクトリ内にGitHubからクローンする
+#### 〈 Gitからクローンする 〉
+・作業用ディレクトリを作ってGitからクローンする  
+・「pwd」 で「/home/ec2-user/workspace」となっていればいい  
+・GitHubの
 ```
-
+mkdir workspace
+cd workspace
+pwd
+git clone https://github.com/ユーザー名/リポジトリ名.git
 ```
