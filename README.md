@@ -1,4 +1,4 @@
-#### 〈 EC2インスタンスへPCからSSHでログイン 〉
+#### 〈 EC2インスタンスへSSHでログイン 〉
 ```
 ssh ec2-user@{IPアドレス} -i {秘密鍵ファイルのパス}
 ```
@@ -28,11 +28,21 @@ sudo curl -SL https://github.com/docker/compose/releases/download/v2.36.0/docker
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 ```
 
-#### 〈 設定ファイル作成 〉
-・compose.yml  
-・nginx/conf.d/default.conf  
-・Dcokerfile  
-※ プログラムコード通りに作成  
+#### 〈 Git インストールと設定 〉
+'''
+sudo yum install git -y
+git config --global init.defaultBranch main
+git config --global user.name "名前"
+git config --global user.email "GitHubに登録したメールアドレス"
+'''
+
+#### 〈 screenの起動・停止 〉
+・作業用ディレクトリを作成する場合は、作ったディレクトリに cd で入ってから「screen」コマンドを実行
+・停止方法：「exit」コマンドを実行
+'''
+screen
+exit
+'''
 
 #### 〈 Dockerの起動・停止 〉
 ```
@@ -41,4 +51,7 @@ Ctrl + C
 ```
 
 #### 〈 配信するファイルの設置場所：mkdir public 〉
-※ プログラムコード通りに作成
+作ったディレクトリ内にGitHubからクローンする
+'''
+
+'''
