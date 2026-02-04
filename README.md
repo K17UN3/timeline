@@ -36,6 +36,11 @@ git config --global user.name "名前"
 git config --global user.email "GitHubに登録したメールアドレス"
 ```
 
+#### 〈 MySQL 操作方法 〉
+```
+docker compose exec mysql mysql compose.yml内で設定した名前
+```
+
 #### 〈 screenの起動・停止 〉
 ・作業用ディレクトリを作成する場合は、作ったディレクトリに cd で入ってから「screen」コマンドを実行  
 ・停止方法：「exit」コマンドを実行
@@ -52,7 +57,7 @@ Ctrl + C
 
 #### 〈 Gitからクローンする 〉
 ・作業用ディレクトリを作ってGitからクローンする  
-・「pwd」 で「/home/ec2-user/workspace」となっていればいい  
+・「pwd」 で「/home/ec2-user/workspace」となっていれば良い  
 ・GitHubのCodeからSSHのURLをコピーしてクローンする
 ```
 mkdir workspace
